@@ -9,53 +9,53 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/tourze/tls-cert-extensions.svg?style=flat-square)](https://scrutinizer-ci.com/g/tourze/tls-cert-extensions)
 [![Total Downloads](https://img.shields.io/packagist/dt/tourze/tls-cert-extensions.svg?style=flat-square)](https://packagist.org/packages/tourze/tls-cert-extensions)
 
-A PHP library for handling TLS certificate extensions, with a focus on Certificate Transparency (CT) support and Signed Certificate Timestamp (SCT) validation.
+一个用于处理 TLS 证书扩展的 PHP 库，专注于证书透明度（CT）支持和签名证书时间戳（SCT）验证。
 
-## Features
+## 功能特性
 
-- **Certificate Transparency (CT) Support**: Parse and validate SCT (Signed Certificate Timestamp) data
-- **SCT Validation**: Validate SCT entries embedded in X.509 certificates
-- **Binary Data Parsing**: Handle binary SCT list data according to RFC 6962
-- **Signature Verification**: Verify SCT signatures using CT log public keys
-- **Exception Handling**: Proper error handling for invalid SCT data
+- **证书透明度（CT）支持**：解析和验证 SCT（签名证书时间戳）数据
+- **SCT 验证**：验证嵌入在 X.509 证书中的 SCT 条目
+- **二进制数据解析**：根据 RFC 6962 处理二进制 SCT 列表数据
+- **签名验证**：使用 CT 日志公钥验证 SCT 签名
+- **异常处理**：对无效 SCT 数据提供适当的错误处理
 
-## Installation
+## 安装
 
 ```bash
 composer require tourze/tls-cert-extensions
 ```
 
-## Usage
+## 使用方法
 
-### Basic SCT Validation
+### 基本 SCT 验证
 
 ```php
 use Tourze\TLSCertExtensions\Certificate\SCTValidator;
 
 $validator = new SCTValidator();
 
-// Parse SCT list from binary data
+// 从二进制数据解析 SCT 列表
 $scts = $validator->parseSCTList($binaryData);
 
-// Validate certificate with embedded SCT
+// 验证包含嵌入 SCT 的证书
 $certificate = file_get_contents('certificate.pem');
 $isValid = $validator->validateCertificate($certificate);
 
 if ($isValid) {
-    echo "Certificate has valid SCT";
+    echo "证书具有有效的 SCT";
 } else {
-    echo "Certificate has invalid or missing SCT";
+    echo "证书具有无效或缺失的 SCT";
 }
 ```
 
-### Manual SCT Validation
+### 手动 SCT 验证
 
 ```php
 use Tourze\TLSCertExtensions\Certificate\SCTValidator;
 
 $validator = new SCTValidator();
 
-// Validate individual SCT
+// 验证单个 SCT
 $sct = [
     'version' => 0,
     'logId' => $logId,
@@ -71,17 +71,17 @@ $sct = [
 $isValid = $validator->validateSCT($sct, $certificate, $tbsCertificate);
 ```
 
-## Certificate Transparency
+## 证书透明度
 
-Certificate Transparency (CT) is a framework that provides an open, auditable, and verifiable way to monitor TLS certificates. This package supports:
+证书透明度（CT）是一个框架，提供开放、可审计和可验证的方式来监控 TLS 证书。此包支持：
 
-- **SCT Parsing**: Parse SCT data from certificate extensions
-- **Signature Verification**: Verify SCT signatures against CT log public keys
-- **Binary Protocol**: Handle the binary SCT list format as defined in RFC 6962
+- **SCT 解析**：从证书扩展中解析 SCT 数据
+- **签名验证**：根据 CT 日志公钥验证 SCT 签名
+- **二进制协议**：处理 RFC 6962 中定义的二进制 SCT 列表格式
 
-## Exception Handling
+## 异常处理
 
-The library provides specific exceptions for error handling:
+该库提供特定的异常用于错误处理：
 
 ```php
 use Tourze\TLSCertExtensions\Exception\InvalidSCTDataException;
@@ -89,22 +89,22 @@ use Tourze\TLSCertExtensions\Exception\InvalidSCTDataException;
 try {
     $scts = $validator->parseSCTList($data);
 } catch (InvalidSCTDataException $e) {
-    echo "Invalid SCT data: " . $e->getMessage();
+    echo "无效的 SCT 数据: " . $e->getMessage();
 }
 ```
 
-## Requirements
+## 系统要求
 
-- PHP 8.1 or higher
-- OpenSSL extension
+- PHP 8.1 或更高版本
+- OpenSSL 扩展
 - tourze/tls-common
-- tourze/tls-crypto-asymmetric  
+- tourze/tls-crypto-asymmetric
 - tourze/tls-x509-core
 
-## Contributing
+## 贡献指南
 
-Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+请参阅 [CONTRIBUTING.md](CONTRIBUTING.md) 获取详细信息。
 
-## License
+## 许可证
 
-The MIT License (MIT). Please see [License File](LICENSE) for more information. 
+MIT 许可证。请参阅 [License File](LICENSE) 获取更多信息。 
